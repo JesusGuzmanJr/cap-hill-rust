@@ -1,5 +1,5 @@
 [package]
-name = "cap-hill-rust"
+name = "web-server"
 version = "0.1.0"
 edition = "2021"
 publish = false
@@ -8,4 +8,53 @@ license = "AGPL-3.0-only"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+strip = "debuginfo"
+
 [dependencies]
+leptos = {version = "0.5", features = ["nightly"]}
+leptos_meta = {version = "0.5", features = ["nightly"]}
+leptos_router = {version = "0.5", features = ["nightly"]}
+leptos_actix = {version = "0.5", optional = true}
+
+[features]
+default = ["ssr", "hydrate"]
+hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
+ssr = [
+  "leptos_actix",
+  "leptos_meta/ssr",
+  "leptos_router/ssr",
+  "leptos/ssr",
+]
+
+[package.metadata.leptos]
+# Sets the name of the binary target used.
+bin-target = "web-server"
+
+# The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
+site-root = "target/site"
+
+# The source CSS file. If it ends with .sass or .scss then it will be compiled by dart-sass into CSS. The CSS is optimized by Lightning CSS before being written to <site-root>/<site-pkg>/app.css
+style-file = "style.scss"
+
+# Files in the asset-dir will be copied to the site-root directory
+assets-dir = "public"
+
+# The port to use for automatic reload monitoring
+reload-port = 3001
+
+# The browserlist query used for optimizing the CSS.
+browserquery = "defaults"
+
+# The features to use when compiling the bin target
+# Optional. Can be over-ridden with the command line parameter --bin-features
+bin-features = ["ssr"]
+
+# The features to use when compiling the lib target
+# Optional. Can be over-ridden with the command line parameter --lib-features
+lib-features = ["hydrate"]
