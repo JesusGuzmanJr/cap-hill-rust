@@ -1,5 +1,6 @@
 export BIND_ADDRESS := "127.0.0.1:8080"
 export RUST_LOG := "web-server=trace,actix_web=info,debug"
+export DOCKER_DEFAULT_PLATFORM := "linux/amd64"
 
 # list all recipes
 default:
