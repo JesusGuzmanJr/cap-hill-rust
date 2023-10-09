@@ -30,10 +30,15 @@ async fn index() -> Response {
     Ok(HttpResponse::Ok().body(index.render()?))
 }
 
+#[get("/health")]
+async fn health() -> HttpResponse {
+    HttpResponse::NoContent().finish()
+}
+
 #[actix_web::main]
 async fn main() -> Result<()> {
     let bind_address = env::var("BIND_ADDRESS")?;
-    HttpServer::new(|| App::new().service(index))
+    HttpServer::new(|| App::new().service(health).service(index))
         .bind(&bind_address)
         .with_context(|| format!("failed to bind to address: {}", bind_address))?
         .run()
