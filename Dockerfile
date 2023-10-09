@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-FROM rust:latest
+FROM messense/rust-musl-cross:x86_64-musl
 
-RUN cargo install cargo-leptos --version 0.1.11
+RUN rustup target add x86_64-unknown-linux-musl
 
 WORKDIR /build
 
@@ -10,11 +10,10 @@ COPY . .
 
 RUN --mount=type=cache,target=/root/.cargo/* \
     --mount=type=cache,target=/build/target \
-    cargo leptos build --release \
-    && mv /build/target/site /site \
-    && mv /build/target/server/release/web-server /web-server
+    cargo build --release \
+    && mv /build/target/x86_64-unknown-linux-musl/release/web-server /web-server
 
-FROM rust:slim
+FROM scratch
 COPY --from=0 /web-server /web-server
 
 ENTRYPOINT ["/web-server"]
