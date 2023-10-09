@@ -1,0 +1,20 @@
+{
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "be5invis.toml"
+    },
+    "cSpell.language": "en,es,de,fr",
+    "cSpell.words": [
+        "askama",
+        "github",
+        "thiserror"
+    ],
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "rust-analyzer.showUnlinkedFileNotification": false,
+}
