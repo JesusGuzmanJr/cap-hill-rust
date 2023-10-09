@@ -42,7 +42,7 @@ async fn health() -> HttpResponse {
 async fn main() -> Result<()> {
     init_logging();
 
-    let bind_address = env::var("BIND_ADDRESS")?;
+    let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
     HttpServer::new(|| App::new().service(health).service(index))
         .bind(&bind_address)
         .with_context(|| format!("failed to bind to address: {}", bind_address))?
