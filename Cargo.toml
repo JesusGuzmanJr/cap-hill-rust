@@ -1,10 +1,10 @@
 [package]
-name = "web-server"
-version = "0.1.0"
 edition = "2021"
+license = "AGPL-3.0-only"
+name = "web-server"
 publish = false
 repository = "https://github.com/JesusGuzmanJr/cap-hill-rust"
-license = "AGPL-3.0-only"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,5 +17,7 @@ strip = "debuginfo"
 actix-web = "4.4"
 anyhow = "1.0"
 askama = "0.12"
-thiserror = "1.0"
 serde = {version = "1.0", features = ["derive"]}
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = {version = "0.3", features = ["env-filter"]}

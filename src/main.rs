@@ -2,6 +2,9 @@ use actix_web::{get, App, HttpResponse, HttpServer};
 use anyhow::{Context, Result};
 use askama::Template;
 use std::env;
+use tracing_subscriber::{
+    filter::LevelFilter, fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter,
+};
 
 mod error;
 
@@ -37,6 +40,8 @@ async fn health() -> HttpResponse {
 
 #[actix_web::main]
 async fn main() -> Result<()> {
+    init_logging();
+
     let bind_address = env::var("BIND_ADDRESS")?;
     HttpServer::new(|| App::new().service(health).service(index))
         .bind(&bind_address)
@@ -44,4 +49,24 @@ async fn main() -> Result<()> {
         .run()
         .await?;
     Ok(())
+}
+
+/// Initialize logging based on the RUST_LOG environment variable.
+fn init_logging() {
+    // show line numbers and hide timestamps in debug builds
+    #[cfg(debug_assertions)]
+    let formatter = fmt::Layer::new().without_time().with_line_number(true);
+
+    // show line numbers and hide timestamps in debug builds
+    #[cfg(not(debug_assertions))]
+    let formatter = fmt::Layer::new();
+
+    let env_filter = EnvFilter::builder()
+        .with_default_directive(LevelFilter::DEBUG.into())
+        .from_env_lossy();
+
+    tracing_subscriber::registry()
+        .with(formatter)
+        .with(env_filter)
+        .init();
 }

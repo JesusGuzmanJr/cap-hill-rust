@@ -9,7 +9,8 @@
     "cSpell.words": [
         "askama",
         "github",
-        "thiserror"
+        "thiserror",
+        "tokio"
     ],
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
