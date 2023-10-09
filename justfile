@@ -7,7 +7,7 @@ default:
 
 # build the container image
 build-image:
-     docker build -t cap-hill-rust .
+    docker build -t cap-hill-rust .
 
 # run the container image removing it when stopped
 run-image:
@@ -16,3 +16,12 @@ run-image:
 # build and run locally
 watch:
      cargo watch -x run
+
+release tag:
+    cargo test
+    git tag {{tag}}
+    git push origin {{tag}}
+    just build-image
+    docker tag cap-hill-rust:latest cap-hill-rust:{{tag}}
+    docker tag cap-hill-rust:{{tag}} ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
+    docker push ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
