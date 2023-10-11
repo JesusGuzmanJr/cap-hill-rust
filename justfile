@@ -16,8 +16,8 @@ build-image:
 # run the container image removing it when stopped
 run-image:
     docker run -it --rm \
-    -e ASSETS_DIR=$ASSETS_DIR \
     -e BIND_ADDRESS=$BIND_ADDRESS \
+    -e RUST_LOG=$RUST_LOG \
     cap-hill-rust
 
 # build and run locally

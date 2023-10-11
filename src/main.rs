@@ -27,16 +27,19 @@ async fn main() -> Result<()> {
                 "/health",
                 web::get().to(|| async { HttpResponse::NoContent().finish() }),
             )
-            .service(pages::index::handler)
-            .service(pages::library::handler)
-            .service(actix_files::Files::new("/assets", &assets_dir))
-            .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts").exclude("/health"))
-            .wrap(middleware::Condition::new(
-                cfg!(not(debug_assertions)),
-                actix_web_lab::middleware::RedirectHttps::with_hsts(
-                    actix_web_lab::header::StrictTransportSecurity::recommended(),
-                ),
-            ))
+            .service(
+                web::scope("/")
+                    .service(pages::index::handler)
+                    .service(pages::library::handler)
+                    .service(actix_files::Files::new("/assets", &assets_dir))
+                    .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts"))
+                    .wrap(middleware::Condition::new(
+                        cfg!(not(debug_assertions)),
+                        actix_web_lab::middleware::RedirectHttps::with_hsts(
+                            actix_web_lab::header::StrictTransportSecurity::recommended(),
+                        ),
+                    )),
+            )
     })
     .bind(&bind_address)
     .with_context(|| format!("failed to bind to address: {}", bind_address))?
