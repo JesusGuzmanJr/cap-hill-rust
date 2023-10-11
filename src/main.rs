@@ -28,7 +28,7 @@ async fn main() -> Result<()> {
                 web::get().to(|| async { HttpResponse::NoContent().finish() }),
             )
             .service(
-                web::scope("/")
+                web::scope("") // global scope
                     .service(pages::index::handler)
                     .service(pages::library::handler)
                     .service(actix_files::Files::new("/assets", &assets_dir))
