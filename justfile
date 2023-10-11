@@ -1,5 +1,8 @@
 export BIND_ADDRESS := "127.0.0.1:8080"
 export RUST_LOG := "web-server=trace,actix_web=info,debug"
+export ASSETS_DIR := "assets"
+
+# compile-time environment variables
 export DOCKER_DEFAULT_PLATFORM := "linux/amd64"
 
 # list all recipes
@@ -20,9 +23,8 @@ watch:
 
 release tag:
     cargo test
-    git tag {{tag}}
-    git push origin {{tag}}
+    git tag --force {{tag}}
+    git push --force origin {{tag}}
     just build-image
-    docker tag cap-hill-rust:latest cap-hill-rust:{{tag}}
-    docker tag cap-hill-rust:{{tag}} ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
+    docker tag cap-hill-rust:latest ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
     docker push ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}

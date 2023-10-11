@@ -4,7 +4,7 @@ license = "AGPL-3.0-only"
 name = "web-server"
 publish = false
 repository = "https://github.com/JesusGuzmanJr/cap-hill-rust"
-version = "0.1.0"
+version = "0.2.0-alpha-1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -14,9 +14,14 @@ lto = true
 strip = "debuginfo"
 
 [dependencies]
+actix-files = "0.6"
 actix-web = "4.4"
+actix-web-lab = "0.19"
 anyhow = "1.0"
-askama = "0.12"
+askama = {version = "0.12", features = ["with-actix-web"]}
+askama_actix = "0.14"
+chrono = {version = "0.4", features = ["serde"]}
+const_format = "0.2"
 serde = {version = "1.0", features = ["derive"]}
 thiserror = "1.0"
 tracing = "0.1"

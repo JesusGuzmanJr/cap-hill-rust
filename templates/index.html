@@ -1,48 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-  <title>{{org_name}}</title>
-</head>
+{% block title %}{{title}}{% endblock %}
 
-<body>
-  <header>
-    <h1>{{org_name}}</h1>
-    <p>Welcome to the Cap Hill Rust Coding/Hacking/Learning homepage!</p>
+{% block head %}
+<meta name="description" content="Cap Hill Rust is a Seattle based Meetup group to code/hack/learn Rust">
+{% endblock %}
 
-    <nav>
-      <ul>
-        <li><a class="current" href="#text">Home</a></li>
-        <li><a href="{{meetup_url}}">Meetup</a></li>
-        <li><a href=" /library">Library</a></li>
-        <li><a href="{{github_url}}">GitHub</a></li>
-      </ul>
-    </nav>
-  </header>
+{% block content %}
+<header>
+  <h1>{{title}}</h1>
+  <p>Welcome to the Cap Hill Rust Coding/Hacking/Learning homepage!</p>
 
-  <main>
-    <p>This group is perfect for enthusiasts interested in Rust. We're an informal bunch getting together to program in
-      Rust in
-      a communal setting.
-    </p>
-    <p>
-      Join us to explore coding practices, share knowledge, and develop new skills together. Come meet like-minded
-      individuals
-      in a supportive and engaging environment to expand your programming horizons. Let's code, hack, and learn
-      together!
-    </p>
-    <p>
-      Checkout our <a href="{{meetup_url}}">Meetup&nbsp;page</a> for more information and to RSVP
-      for our next event.
-    </p>
-  </main>
+  <nav>
+    <ul>
+      <li><a class="current" href="/">Home</a></li>
+      <li><a href="{{meetup_url}}">Meetup</a></li>
+      <li><a href=" /library">Library</a></li>
+      <li><a href="{{github_url}}">GitHub</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <footer>
-    <p>Thanks for visiting!</p>
-  </footer>
-</body>
+<main>
+  <p>Calling all Seattle-based Rust enthusiasts! We're an informal bunch getting together to program in
+    Rust.
+  </p>
+  <p>
+    Join us to explore coding practices, share knowledge, and develop new skills together. Come meet like-minded
+    individuals
+    in a supportive and engaging environment to expand your programming horizons. Let's code, hack, and learn
+    together!
+  </p>
+  <p>
+    Checkout our <a href="{{meetup_url}}">Meetup&nbsp;page</a> for more information and to RSVP
+    for our next event.
+  </p>
+</main>
 
-</html>
+{% include "footer.html" %}
+{% endblock %}

@@ -8,7 +8,10 @@
     "cSpell.language": "en,es,de,fr",
     "cSpell.words": [
         "askama",
+        "formatcp",
         "github",
+        "hsts",
+        "isbn",
         "justfile",
         "thiserror",
         "tokio"

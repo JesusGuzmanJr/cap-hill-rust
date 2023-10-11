@@ -2,6 +2,8 @@
 
 FROM messense/rust-musl-cross:x86_64-musl
 
+LABEL org.opencontainers.image.description Cap Hill Rust web server image
+
 RUN rustup target add x86_64-unknown-linux-musl
 
 WORKDIR /build
