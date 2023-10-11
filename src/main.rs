@@ -1,4 +1,8 @@
-use actix_web::{middleware, web, App, HttpResponse, HttpServer};
+use actix_web::{
+    http::StatusCode,
+    middleware::{self, ErrorHandlers},
+    web, App, HttpResponse, HttpServer,
+};
 use anyhow::{Context, Result};
 
 use std::env;
@@ -28,7 +32,11 @@ async fn main() -> Result<()> {
                 web::get().to(|| async { HttpResponse::NoContent().finish() }),
             )
             .service(
-                web::scope("") // global scope
+                web::scope("")
+                    .wrap(
+                        ErrorHandlers::new()
+                            .handler(StatusCode::NOT_FOUND, pages::not_found::handler),
+                    )
                     .service(pages::index::handler)
                     .service(pages::library::handler)
                     .service(actix_files::Files::new("/assets", &assets_dir))
