@@ -24,18 +24,26 @@ const ORG_NAME: &str = "Cap Hill Rust";
 const MEETUP_URL: &str = "https://www.meetup.com/Cap-Hill-Rust/";
 const GITHUB_URL: &str = "https://github.com/JesusGuzmanJr/cap-hill-rust";
 
-static FAVICON: OnceLock<PathBuf> = OnceLock::new();
+static ASSETS: OnceLock<PathBuf> = OnceLock::new();
+
+#[inline]
+fn assets() -> &'static Path {
+    ASSETS.get().expect("not initialized")
+}
 
 #[actix_web::main]
 async fn main() -> Result<()> {
     init_logging();
 
     let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
-    let assets = env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?;
 
-    _ = FAVICON.set(Path::new(&assets).join("favicons").join("favicon.ico"));
+    _ = ASSETS
+        .set(Path::new(&env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?).into());
 
     HttpServer::new(move || {
+        const FAVICON: &str = "favicon.ico";
+        const ROBOTS: &str = "robots.txt";
+
         App::new()
             .route(
                 "/health",
@@ -48,14 +56,21 @@ async fn main() -> Result<()> {
                             .handler(StatusCode::NOT_FOUND, pages::not_found::handler),
                     )
                     .route(
-                        "/favicon.ico",
+                        FAVICON,
                         web::get().to(move || async {
-                            NamedFile::open_async(FAVICON.get().expect("not initialized")).await
+                            NamedFile::open_async(assets().join("favicons").join("favicon.ico"))
+                                .await
+                        }),
+                    )
+                    .route(
+                        ROBOTS,
+                        web::get().to(move || async {
+                            NamedFile::open_async(assets().join(ROBOTS)).await
                         }),
                     )
                     .service(pages::index::handler)
                     .service(pages::library::handler)
-                    .service(actix_files::Files::new("/assets", &assets))
+                    .service(actix_files::Files::new("/assets", &assets()))
                     .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts"))
                     .wrap(middleware::Condition::new(
                         cfg!(not(debug_assertions)),

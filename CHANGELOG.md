@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redirect http to https.
 - Added 404 page.
 - Added favicons.
+- Add robots.txt.
 
 ### Fixed
 
