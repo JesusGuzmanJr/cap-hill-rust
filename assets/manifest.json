@@ -1,6 +1,7 @@
 {
     "name": "Cap Hill Rust",
     "short_name": "Cap Hill Rust",
+    "description": "Cap Hill Rust is a Rust meetup in Capitol Hill, Seattle.",
     "icons": [
         {
             "src": "/assets/favicons/android-chrome-192x192.png",
