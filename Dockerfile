@@ -17,5 +17,8 @@ RUN --mount=type=cache,target=/root/.cargo/* \
 
 FROM scratch
 COPY --from=0 /web-server /web-server
+COPY --from=0 /build/assets /assets
+
+ENV ASSETS_DIR=/assets
 
 ENTRYPOINT ["/web-server"]
