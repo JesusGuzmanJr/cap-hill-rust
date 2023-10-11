@@ -1,3 +1,4 @@
+use actix_files::NamedFile;
 use actix_web::{
     http::StatusCode,
     middleware::{self, ErrorHandlers},
@@ -5,7 +6,11 @@ use actix_web::{
 };
 use anyhow::{Context, Result};
 
-use std::env;
+use std::{
+    env,
+    path::{Path, PathBuf},
+    sync::OnceLock,
+};
 use tracing_subscriber::{
     filter::LevelFilter, fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter,
 };
@@ -19,12 +24,17 @@ const ORG_NAME: &str = "Cap Hill Rust";
 const MEETUP_URL: &str = "https://www.meetup.com/Cap-Hill-Rust/";
 const GITHUB_URL: &str = "https://github.com/JesusGuzmanJr/cap-hill-rust";
 
+static FAVICON: OnceLock<PathBuf> = OnceLock::new();
+
 #[actix_web::main]
 async fn main() -> Result<()> {
     init_logging();
 
     let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
-    let assets_dir = env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?;
+    let assets = env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?;
+
+    _ = FAVICON.set(Path::new(&assets).join("favicons").join("favicon.ico"));
+
     HttpServer::new(move || {
         App::new()
             .route(
@@ -37,9 +47,15 @@ async fn main() -> Result<()> {
                         ErrorHandlers::new()
                             .handler(StatusCode::NOT_FOUND, pages::not_found::handler),
                     )
+                    .route(
+                        "/favicon.ico",
+                        web::get().to(move || async {
+                            NamedFile::open_async(FAVICON.get().expect("not initialized")).await
+                        }),
+                    )
                     .service(pages::index::handler)
                     .service(pages::library::handler)
-                    .service(actix_files::Files::new("/assets", &assets_dir))
+                    .service(actix_files::Files::new("/assets", &assets))
                     .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts"))
                     .wrap(middleware::Condition::new(
                         cfg!(not(debug_assertions)),
