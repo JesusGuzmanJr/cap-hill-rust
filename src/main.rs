@@ -1,4 +1,5 @@
 use actix_files::NamedFile;
+use actix_governor::{Governor, GovernorConfigBuilder};
 use actix_web::{
     http::StatusCode,
     middleware::{self, ErrorHandlers},
@@ -15,7 +16,7 @@ mod catalog;
 mod logging;
 mod pages;
 
-type DateTime = chrono::DateTime<chrono::Utc>;
+type Date = chrono::NaiveDate;
 
 const ORG_NAME: &str = "Cap Hill Rust";
 const MEETUP_URL: &str = "https://www.meetup.com/Cap-Hill-Rust/";
@@ -69,6 +70,7 @@ async fn main() -> Result<()> {
                     )
                     .service(pages::index::handler)
                     .service(pages::library::handler)
+                    .service(catalog::get_catalog)
                     .service(actix_files::Files::new("/assets", &assets()))
                     .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts"))
                     .wrap(middleware::Condition::new(
@@ -78,6 +80,15 @@ async fn main() -> Result<()> {
                         ),
                     )),
             )
+            .wrap(Governor::new(
+                &GovernorConfigBuilder::default()
+                    .finish()
+                    .expect("invalid rate limiter config"),
+            ))
+            .wrap(middleware::Compress::default())
+            .wrap(middleware::NormalizePath::new(
+                middleware::TrailingSlash::Trim,
+            ))
     })
     .bind(&bind_address)
     .with_context(|| format!("failed to bind to address: {}", bind_address))?

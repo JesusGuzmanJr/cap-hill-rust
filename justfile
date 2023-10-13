@@ -42,6 +42,7 @@ migration-new name:
 # runs all the migrations
 migration-run:
     sqlx migrate run
+    psql -U cap_hill_rust -d cap_hill_rust -f init.sql
 
 # revert the last migration
 migration-revert:
