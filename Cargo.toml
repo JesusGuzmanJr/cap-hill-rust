@@ -23,6 +23,13 @@ askama_actix = "0.14"
 chrono = {version = "0.4", features = ["serde"]}
 const_format = "0.2"
 serde = {version = "1.0", features = ["derive"]}
+sqlx = {version = "0.7", features = [
+  "chrono",
+  "macros",
+  "postgres",
+  "runtime-tokio-rustls",
+  "uuid",
+]}
 thiserror = "1.0"
 tracing = "0.1"
 tracing-subscriber = {version = "0.3", features = ["env-filter"]}

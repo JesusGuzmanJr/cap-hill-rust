@@ -5,17 +5,14 @@ use actix_web::{
     web, App, HttpResponse, HttpServer,
 };
 use anyhow::{Context, Result};
-
 use std::{
     env,
     path::{Path, PathBuf},
     sync::OnceLock,
 };
-use tracing_subscriber::{
-    filter::LevelFilter, fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter,
-};
 
 mod catalog;
+mod logging;
 mod pages;
 
 type DateTime = chrono::DateTime<chrono::Utc>;
@@ -33,12 +30,14 @@ fn assets() -> &'static Path {
 
 #[actix_web::main]
 async fn main() -> Result<()> {
-    init_logging();
+    logging::init();
+    catalog::init().await?;
 
     let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
 
-    _ = ASSETS
-        .set(Path::new(&env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?).into());
+    ASSETS
+        .set(Path::new(&env::var("ASSETS_DIR").with_context(|| "ASSETS_DIR is not set")?).into())
+        .expect("already initialized");
 
     HttpServer::new(move || {
         const FAVICON: &str = "favicon.ico";
@@ -85,23 +84,4 @@ async fn main() -> Result<()> {
     .run()
     .await?;
     Ok(())
-}
-
-/// Initialize logging based on the RUST_LOG environment variable.
-fn init_logging() {
-    // show line numbers and hide timestamps in debug builds
-    #[cfg(debug_assertions)]
-    let formatter = fmt::Layer::new().without_time().with_line_number(true);
-
-    #[cfg(not(debug_assertions))]
-    let formatter = fmt::Layer::new();
-
-    tracing_subscriber::registry()
-        .with(formatter)
-        .with(
-            EnvFilter::builder()
-                .with_default_directive(LevelFilter::DEBUG.into())
-                .from_env_lossy(),
-        )
-        .init();
 }
