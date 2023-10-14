@@ -3,7 +3,7 @@
 
 [toolchain]
 # We pin the nightly toolchain so we can have reproducible builds.
-channel = "nightly-2023-09-01"
+channel = "nightly-2023-10-01"
 
 # Here we specifiy the additional targets for compiliation, the host target is by default included.
 targets = ["wasm32-unknown-unknown"]

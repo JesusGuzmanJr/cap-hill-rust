@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add robots.txt.
 - Added Postgres support.
 - Switching to Leptos and unstable rust.
+- Switch to nightly-2023-10-01.
 
 ### Fixed
 

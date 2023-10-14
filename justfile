@@ -41,7 +41,9 @@ release tag:
     git push --force origin {{tag}}
     just build-image
     docker tag cap-hill-rust:latest ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
+    docker tag cap-hill-rust:latest ghcr.io/jesusguzmanjr/cap-hill-rust:latest
     docker push ghcr.io/jesusguzmanjr/cap-hill-rust:{{tag}}
+    docker push ghcr.io/jesusguzmanjr/cap-hill-rust:latest
 
 # creates a new up and down migration
 migration-new name:
