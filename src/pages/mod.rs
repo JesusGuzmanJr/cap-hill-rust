@@ -1,3 +1,4 @@
-pub mod index;
-pub mod library;
-pub mod not_found;
+mod index;
+mod library;
+
+pub use {index::*, library::*};

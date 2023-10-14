@@ -39,10 +39,8 @@ async fn main() -> Result<()> {
         }
     };
 
-    // Generate the list of routes in your Leptos App
     let routes = leptos_actix::generate_route_list(cap_hill_rust::App);
-
-    let leptos_app_data = web::Data::new(leptos_options.to_owned());
+    let leptos_app_data = web::Data::new(leptos_options.clone());
 
     HttpServer::new(move || {
         const FAVICON: &str = "favicon.ico";
@@ -59,7 +57,7 @@ async fn main() -> Result<()> {
                     NamedFile::open_async(
                         Path::new(&data.get_ref().site_root)
                             .join("favicons")
-                            .join("favicon.ico"),
+                            .join(FAVICON),
                     )
                     .await
                 }),

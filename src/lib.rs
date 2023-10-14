@@ -1,10 +1,18 @@
 use {const_format::formatcp, leptos::*, leptos_meta::*, leptos_router::*};
 
+mod components;
+mod pages;
+
 type Date = chrono::NaiveDate;
 
 const ORG_NAME: &str = "Cap Hill Rust";
-const MEETUP_URL: &str = "https://www.meetup.com/Cap-Hill-Rust/";
-const GITHUB_URL: &str = "https://github.com/JesusGuzmanJr/cap-hill-rust";
+
+pub mod path {
+    pub const HOME: &str = "/";
+    pub const MEETUP: &str = "https://www.meetup.com/Cap-Hill-Rust/";
+    pub const GITHUB: &str = "https://github.com/JesusGuzmanJr/cap-hill-rust";
+    pub const LIBRARY: &str = "/library";
+}
 
 /// The site-root relative folder where all compiled output is written to by
 /// leptos.
@@ -15,11 +23,16 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
     view! {
         <Meta charset="utf-8" />
-        <Meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <Stylesheet href="https://cdn.simplecss.org/simple.min.css" />
-        <Link rel="manifest" href=formatcp!("{COMPILED_ASSETS}/manifest.json") />
-        <Meta property="og:title" content=ORG_NAME />
-        <Meta name="description" content="Cap Hill Rust is a Seattle based Meetup group to code/hack/learn Rust." />
+        <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <Stylesheet href="https://cdn.simplecss.org/simple.min.css"/>
+        <Link rel="manifest" href=formatcp!("{COMPILED_ASSETS}/manifest.json")/>
+        <Meta property="og:title" content=ORG_NAME/>
+        <Router>
+            <Routes>
+                <Route path=path::HOME view=pages::Index/>
+                <Route path=path::LIBRARY view=pages::Library/>
+            </Routes>
+        </Router>
     }
 }
 
