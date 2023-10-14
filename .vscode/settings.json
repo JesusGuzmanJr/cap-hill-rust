@@ -8,6 +8,7 @@
     "cSpell.language": "en,es,de,fr",
     "cSpell.words": [
         "askama",
+        "bindgen",
         "Dweck",
         "favicons",
         "formatcp",
@@ -15,9 +16,11 @@
         "hsts",
         "isbn",
         "justfile",
+        "leptos",
         "postgres",
         "psql",
         "sqlx",
+        "Stylesheet",
         "thiserror",
         "tokio",
         "Uuid"

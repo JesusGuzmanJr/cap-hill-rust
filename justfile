@@ -1,4 +1,4 @@
-export ASSETS_DIR := "assets"
+export ASSETS := "target/site"
 export BIND_ADDRESS := "127.0.0.1:8080"
 export RUST_LOG := "web-server=trace,actix_web=info,sqlx=info,debug"
 
@@ -12,6 +12,18 @@ export DATABASE_URL := "postgresql://cap_hill_rust@127.0.0.1/cap_hill_rust"
 default:
     just --list
 
+# run unit tests
+test:
+    cargo leptos test
+
+# run watching for changes
+watch:
+    cargo leptos watch
+
+# clean all build artifacts
+clean:
+    cargo clean
+
 # build the container image
 build-image:
     docker build -t cap-hill-rust .
@@ -22,10 +34,6 @@ run-image:
     -e BIND_ADDRESS=$BIND_ADDRESS \
     -e RUST_LOG=$RUST_LOG \
     cap-hill-rust
-
-# build and run locally
-watch:
-     cargo watch -x run
 
 release tag:
     cargo test

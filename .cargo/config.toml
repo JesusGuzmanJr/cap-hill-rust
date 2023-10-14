@@ -1,0 +1,14 @@
+[build]
+# used to enable the compiler to track the datbase migrations directory
+# https://docs.rs/sqlx/latest/sqlx/macro.migrate.html#nightly-rust-cfg-flag
+rustflags = ["--cfg=sqlx_macros_unstable"]
+
+[term]
+# whether cargo shows progress bar
+progress.when = 'always'
+
+# width of progress bar
+progress.width = 80
+
+# whether cargo output is quiet
+quiet = true

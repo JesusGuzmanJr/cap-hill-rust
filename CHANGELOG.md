@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added favicons.
 - Add robots.txt.
 - Added Postgres support.
+- Switching to Leptos and unstable rust.
 
 ### Fixed
 

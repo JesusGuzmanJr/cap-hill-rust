@@ -1,9 +1,13 @@
-use crate::Date;
-use actix_web::{error::ErrorInternalServerError, get, HttpResponse, Responder};
-use anyhow::{Context, Result};
-use serde::Serialize;
-use sqlx::{Pool, Postgres};
-use std::sync::OnceLock;
+#![cfg(feature = "ssr")]
+
+use {
+    crate::Date,
+    actix_web::{error::ErrorInternalServerError, get, HttpResponse},
+    anyhow::{Context, Result},
+    serde::Serialize,
+    sqlx::{Pool, Postgres},
+    std::sync::OnceLock,
+};
 
 #[derive(Debug, Serialize)]
 pub struct Book {
@@ -40,7 +44,7 @@ pub async fn init() -> Result<()> {
 }
 
 #[get("/catalog")]
-pub async fn get_catalog() -> impl Responder {
+pub async fn get_catalog() -> actix_web::Result<HttpResponse> {
     let catalog = sqlx::query!(
         "
         SELECT book.id AS book_id, title, published, publisher.name AS publisher, summary, json_agg(author.name) AS authors
@@ -61,7 +65,7 @@ pub async fn get_catalog() -> impl Responder {
     })?
     .into_iter()
     .map(|record| {
-        let authors = match record.authors {
+        let mut authors = match record.authors {
             None => {
                 tracing::error!(title = record.title, book_id = ?record.book_id, "no authors for book");
                 vec![]
@@ -75,6 +79,10 @@ pub async fn get_catalog() -> impl Responder {
             }
         };
 
+        if authors.is_empty() {
+            authors.push("Unspecified".into());
+        }
+
         Book {
             title: record.title,
             authors,
@@ -85,5 +93,5 @@ pub async fn get_catalog() -> impl Responder {
     })
     .collect::<Vec<Book>>();
 
-    Ok::<_, actix_web::error::Error>(HttpResponse::Ok().json(catalog))
+    Ok(HttpResponse::Ok().json(catalog))
 }
