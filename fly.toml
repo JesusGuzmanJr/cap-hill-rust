@@ -8,7 +8,7 @@ kill_signal = "SIGTERM"
 primary_region = "sea"
 
 [build]
-image = "ghcr.io/jesusguzmanjr/cap-hill-rust:v0.2.0-alpha-1"
+image = "ghcr.io/jesusguzmanjr/cap-hill-rust:v0.2.0-rc.1"
 
 [http_service]
 auto_start_machines = true

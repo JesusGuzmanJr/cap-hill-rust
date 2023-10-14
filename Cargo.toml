@@ -4,7 +4,7 @@ license = "AGPL-3.0-only"
 name = "cap-hill-rust"
 publish = false
 repository = "https://github.com/JesusGuzmanJr/cap-hill-rust"
-version = "0.2.0-alpha-1"
+version = "0.2.0-rc.1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

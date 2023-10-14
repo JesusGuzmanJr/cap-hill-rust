@@ -604,7 +604,7 @@ checksum = "c59e92b5a388f549b863a7bea62612c09f24c8393560709a54558a9abdfb3b9c"
 
 [[package]]
 name = "cap-hill-rust"
-version = "0.2.0-alpha-1"
+version = "0.2.0-rc.1"
 dependencies = [
  "actix-files",
  "actix-governor",
