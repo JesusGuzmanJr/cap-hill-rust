@@ -19,5 +19,6 @@ pub fn Index() -> impl IntoView {
             <p>"Join us to explore coding practices, share knowledge, and develop new skills together. Come meet like-minded individuals in a supportive and engaging environment to expand your programming horizons. Let's code, hack, and learn together!"</p>
             <p>"Checkout our "<a href=path::MEETUP>"Meetup\u{a0}page"</a>" for more information and to RSVP for our next event."</p>
         </main>
+        <Footer/>
     }
 }

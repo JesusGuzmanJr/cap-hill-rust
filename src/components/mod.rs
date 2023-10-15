@@ -1,3 +1,4 @@
+mod footer;
 mod nav;
 
-pub use nav::*;
+pub use {footer::*, nav::*};

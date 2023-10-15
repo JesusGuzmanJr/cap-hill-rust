@@ -1,0 +1,17 @@
+[Unit]
+Description=caphillrust.com
+After=network.target
+Documentation=https://github.com/JesusGuzmanJr/cap-hill-rust
+
+[Service]
+ExecStart=/usr/local/bin/cap-hill-rust
+Environment="MARZICHAT_CONFIG=/etc/marzichat/config.ron"
+# Actix expects a SIGTERM to perform a graceful shutdown of workers
+KillSignal=SIGTERM
+Restart=always
+TimeoutStopSec=3
+User=root
+
+[Install]
+WantedBy=multi-user.target
+Alias=cap-hill-rust.service

@@ -33,7 +33,6 @@ leptos_router = {version = "0.5", features = ["nightly"]}
 log = {version = "0.4", optional = true}
 serde = {version = "1.0", optional = true}
 serde_json = {version = "1.0.107", optional = true}
-sqlx = {version = "0.7", optional = true}
 thiserror = {version = "1.0", optional = true}
 tracing = {version = "0.1", optional = true}
 tracing-subscriber = {version = "0.3", features = ["env-filter"], optional = true}
@@ -51,11 +50,6 @@ ssr = [
   "leptos_meta/ssr",
   "leptos_router/ssr",
   "leptos/ssr",
-  "sqlx/chrono",
-  "sqlx/macros",
-  "sqlx/postgres",
-  "sqlx/runtime-tokio-rustls",
-  "sqlx/uuid",
   "serde_json",
   "serde/derive",
   "tracing",

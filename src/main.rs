@@ -21,7 +21,6 @@ type Date = chrono::NaiveDate;
 #[actix_web::main]
 async fn main() -> Result<()> {
     logging::init();
-    catalog::init().await?;
 
     let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
 

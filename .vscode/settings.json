@@ -5,7 +5,7 @@
     "[toml]": {
         "editor.defaultFormatter": "be5invis.toml"
     },
-    "cSpell.language": "en,es,de,fr",
+    "cSpell.language": "en",
     "cSpell.words": [
         "askama",
         "bindgen",
@@ -17,9 +17,6 @@
         "isbn",
         "justfile",
         "leptos",
-        "postgres",
-        "psql",
-        "sqlx",
         "Stylesheet",
         "thiserror",
         "tokio",
@@ -31,7 +28,4 @@
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
     "rust-analyzer.showUnlinkedFileNotification": false,
-    "rust-analyzer.server.extraEnv": {
-        "DATABASE_URL": "postgresql://cap_hill_rust@127.0.0.1/cap_hill_rust"
-    }
 }
