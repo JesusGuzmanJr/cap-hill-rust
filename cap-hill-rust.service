@@ -5,7 +5,6 @@ Documentation=https://github.com/JesusGuzmanJr/cap-hill-rust
 
 [Service]
 ExecStart=/usr/local/bin/cap-hill-rust
-Environment="MARZICHAT_CONFIG=/etc/marzichat/config.ron"
 # Actix expects a SIGTERM to perform a graceful shutdown of workers
 KillSignal=SIGTERM
 Restart=always
