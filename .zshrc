@@ -46,28 +46,32 @@ logs () {
 }
 
 build () {
-    cd $CAP_HILL_RUST && cargo leptos build --release
+    pushd $CAP_HILL_RUST && cargo leptos build --release
+    popd
 }
 
 test () {
-    cd $CAP_HILL_RUST && cargo leptos test
+    pushd $CAP_HILL_RUST && cargo leptos test
+    popd
 }
 
 release () {
     test && build && release_unchecked
+    popd
 }
 
 release_unchecked () {
-    cd $CAP_HILL_RUST \
+    pushd $CAP_HILL_RUST \
         && VERSION=$(cargo metadata --no-deps --format-version 1 | jq ".packages[0].version" | xargs) \
         && APP=cap_hill_rust_v${VERSION}_$(git rev-parse --short HEAD) \
         && rm -f /usr/local/bin/$APP \
         && cp ../target/server/release/cap-hill-rust /usr/local/bin/$APP \
         && ln -sf /usr/local/bin/$APP /usr/local/bin/cap-hill-rust \
-        && rm -rf /usr/local/etc/cap-hill-rust/public \
-        && mkdir -p /usr/local/etc/cap-hill-rust/public \
-        && rsync -a /root/cap-hill-rust/target/site/ /usr/local/etc/cap-hill-rust/public/ \
+        && rm -rf /usr/local/etc/cap-hill-rust/assets \
+        && mkdir -p /usr/local/etc/cap-hill-rust/assets \
+        && rsync -a /root/cap-hill-rust/target/site/ /usr/local/etc/cap-hill-rust/assets/ \
         && systemctl restart cap-hill-rust
-        sleep 3
-        systemctl status cap-hill-rust
+    sleep 3
+    systemctl status cap-hill-rust
+    popd
 }
