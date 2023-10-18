@@ -19,7 +19,7 @@ strip = "debuginfo"
 [dependencies]
 actix-files = {version = "0.6", optional = true}
 actix-governor = {version = "0.5.0", optional = true}
-actix-web = {version = "4.4", optional = true}
+actix-web = {version = "4.4", optional = true, features = ["macros", "rustls-0_21"]}
 actix-web-lab = {version = "0.19", optional = true}
 anyhow = "1.0"
 chrono = {version = "0.4", features = ["serde"]}
@@ -31,10 +31,17 @@ leptos_actix = {version = "0.5", optional = true}
 leptos_meta = {version = "0.5", features = ["nightly"]}
 leptos_router = {version = "0.5", features = ["nightly"]}
 log = {version = "0.4", optional = true}
+ron = "0.8.1"
+rustls = {version = "0.21", optional = true}
+rustls-pemfile = {version = "1.0", optional = true}
+sentry = {version = "0.31", optional = true}
+sentry-actix = {version = "0.31", optional = true}
+sentry-tracing = {version = "0.31", optional = true}
 serde = {version = "1.0", optional = true}
 serde_json = {version = "1.0.107", optional = true}
 thiserror = {version = "1.0", optional = true}
 tracing = {version = "0.1", optional = true}
+tracing-journald = {version = "0.3", optional = true}
 tracing-subscriber = {version = "0.3", features = ["env-filter"], optional = true}
 wasm-bindgen = {version = "0.2", optional = true}
 
@@ -44,16 +51,22 @@ hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate", "lo
 ssr = [
   "actix-files",
   "actix-governor",
-  "actix-web",
   "actix-web-lab",
+  "actix-web",
   "leptos_actix",
   "leptos_meta/ssr",
   "leptos_router/ssr",
   "leptos/ssr",
+  "rustls-pemfile",
+  "rustls",
+  "sentry-actix",
+  "sentry-tracing",
+  "sentry",
   "serde_json",
   "serde/derive",
-  "tracing",
+  "tracing-journald",
   "tracing-subscriber",
+  "tracing",
 ]
 
 [package.metadata.leptos]

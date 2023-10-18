@@ -4,6 +4,7 @@ After=network.target
 Documentation=https://github.com/JesusGuzmanJr/cap-hill-rust
 
 [Service]
+EnvironmentFile=-/etc/sysconfig/cap-hill-rust
 ExecStart=/usr/local/bin/cap-hill-rust
 # Actix expects a SIGTERM to perform a graceful shutdown of workers
 KillSignal=SIGTERM

@@ -1,0 +1,10 @@
+(
+    logging: (
+        directives: "web-server=trace,actix_web=info,debug",
+        sentry: None,
+    ),
+    tls: None,
+    debug_listening_address: Some("127.0.0.1:8080"),
+    assets: "target/site",
+    shutdown_timeout_seconds: 3
+)

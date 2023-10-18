@@ -2,7 +2,7 @@
 dnf update -y
 
 # install packages
-dnf install -y zsh vim git bat exa gcc openssl-devel lsof
+dnf install -y zsh vim git bat exa gcc openssl-devel lsof certbot
 
 # change shell to zsh
 usermod -s $(which zsh) root
@@ -24,5 +24,13 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 dnf copr enable atim/bottom -y
 dnf install bottom -y
 
+# install firewall
+dnf install firewalld -y
+systemctl enable --now firewalld
+firewall-cmd --permanent --add-service=http --add-service=https
+
 # install leptos
 cargo install cargo-leptos --version 0.2.0
+
+# setup certbot
+certbot certonly --webroot --webroot-path /usr/local/etc/cap-hill-rust/assets/ -d caphillrust.com

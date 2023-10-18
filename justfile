@@ -1,6 +1,4 @@
-export ASSETS := "target/site"
-export BIND_ADDRESS := "127.0.0.1:8080"
-export RUST_LOG := "web-server=trace,actix_web=info,debug"
+export CONFIG := "config.ron"
 
 # list all recipes
 default:

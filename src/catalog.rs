@@ -1,18 +1,12 @@
 #![cfg(feature = "ssr")]
 
-use {
-    crate::Date,
-    actix_web::{error::ErrorInternalServerError, get, HttpResponse},
-    anyhow::{Context, Result},
-    serde::Serialize,
-    std::sync::OnceLock,
-};
+use {chrono::NaiveDate, serde::Serialize};
 
 #[derive(Debug, Serialize)]
 pub struct Book {
     title: String,
     authors: Vec<String>,
     publisher: String,
-    published: Date,
+    published: NaiveDate,
     summary: String,
 }

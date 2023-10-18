@@ -1,6 +1,7 @@
 export ZSH="/root/.oh-my-zsh"
 export PATH="/root/.cargo/bin:$PATH"
 export CAP_HILL_RUST="/root/cap-hill-rust"
+export LEPTOS_WASM_OPT_VERSION="version_116"
 
 ZSH_THEME="pygmalion"
 
@@ -57,7 +58,6 @@ test () {
 
 release () {
     test && build && release_unchecked
-    popd
 }
 
 release_unchecked () {
@@ -65,7 +65,7 @@ release_unchecked () {
         && VERSION=$(cargo metadata --no-deps --format-version 1 | jq ".packages[0].version" | xargs) \
         && APP=cap_hill_rust_v${VERSION}_$(git rev-parse --short HEAD) \
         && rm -f /usr/local/bin/$APP \
-        && cp ../target/server/release/cap-hill-rust /usr/local/bin/$APP \
+        && cp target/release/cap-hill-rust /usr/local/bin/$APP \
         && ln -sf /usr/local/bin/$APP /usr/local/bin/cap-hill-rust \
         && rm -rf /usr/local/etc/cap-hill-rust/assets \
         && mkdir -p /usr/local/etc/cap-hill-rust/assets \

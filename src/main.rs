@@ -10,19 +10,21 @@ use {
     anyhow::{Context, Result},
     leptos::*,
     leptos_actix::LeptosRoutes,
-    std::{env, path::Path},
+    std::{
+        env,
+        net::{Ipv4Addr, Ipv6Addr, SocketAddr},
+        path::Path,
+    },
 };
 
 mod catalog;
-mod logging;
-
-type Date = chrono::NaiveDate;
+mod config;
+mod logger;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
-    logging::init();
-
-    let bind_address = env::var("BIND_ADDRESS").with_context(|| "BIND_ADDRESS is not set")?;
+    let config = config::parse_from_env()?;
+    logger::init(config.logging);
 
     let leptos_options = {
         LeptosOptions {
@@ -31,7 +33,7 @@ async fn main() -> Result<()> {
             } else {
                 leptos_config::Env::PROD
             },
-            site_root: env::var("ASSETS").with_context(|| "ASSETS is not set")?,
+            site_root: config.assets,
             ..leptos_config::get_config_from_env()
                 .expect("failed to get leptos config")
                 .leptos_options
@@ -41,7 +43,7 @@ async fn main() -> Result<()> {
     let routes = leptos_actix::generate_route_list(cap_hill_rust::App);
     let leptos_app_data = web::Data::new(leptos_options.clone());
 
-    HttpServer::new(move || {
+    let mut server = HttpServer::new(move || {
         const FAVICON: &str = "favicon.ico";
         const ROBOTS: &str = "robots.txt";
 
@@ -74,10 +76,6 @@ async fn main() -> Result<()> {
             )
             .service(actix_files::Files::new("/", &leptos_options.site_root).use_hidden_files())
             .app_data(leptos_app_data.clone())
-            .service(actix_files::Files::new(
-                "/assets",
-                leptos_options.site_root.clone(),
-            ))
             .wrap(actix_web::middleware::Logger::new("%s for %r %a in %Ts"))
             .wrap(middleware::Condition::new(
                 cfg!(not(debug_assertions)),
@@ -94,10 +92,35 @@ async fn main() -> Result<()> {
             .wrap(middleware::NormalizePath::new(
                 middleware::TrailingSlash::Trim,
             ))
-    })
-    .bind(&bind_address)
-    .with_context(|| format!("failed to bind to address: {}", bind_address))?
-    .run()
-    .await?;
+    });
+
+    if let Some(tls) = config.tls {
+        let http = [
+            SocketAddr::new(Ipv4Addr::UNSPECIFIED.into(), 80),
+            SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), 80),
+        ];
+        let https = [
+            SocketAddr::new(Ipv4Addr::UNSPECIFIED.into(), 443),
+            SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), 443),
+        ];
+        server = server
+            .bind(http.as_ref())
+            .context("couldn't bind to port 80")?
+            .bind_rustls_021(https.as_ref(), tls)
+            .context("couldn't bind to port 443")?
+    } else {
+        tracing::warn!("TLS is not configured");
+    };
+
+    if let Some(debug_listening_address) = config.debug_listening_address {
+        server = server
+            .bind(debug_listening_address)
+            .with_context(|| format!("couldn't bind to {debug_listening_address}"))?;
+    }
+
+    server
+        .shutdown_timeout(config.shutdown_timeout_seconds.get())
+        .run()
+        .await?;
     Ok(())
 }
