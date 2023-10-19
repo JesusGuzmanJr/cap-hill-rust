@@ -31,6 +31,7 @@ leptos_actix = {version = "0.5", optional = true}
 leptos_meta = {version = "0.5", features = ["nightly"]}
 leptos_router = {version = "0.5", features = ["nightly"]}
 log = {version = "0.4", optional = true}
+reqwest = "0.11"
 ron = "0.8.1"
 rustls = {version = "0.21", optional = true}
 rustls-pemfile = {version = "1.0", optional = true}

@@ -12,6 +12,10 @@ test:
 watch:
     cargo leptos watch
 
+# run watching
+run:
+    cargo leptos serve
+
 # clean all build artifacts
 clean:
     cargo clean

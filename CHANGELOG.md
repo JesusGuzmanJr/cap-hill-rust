@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redirect http to https.
 - Added favicons.
 - Add robots.txt.
+- Added healthchecks.io monitoring.
 
 ### Fixed
 

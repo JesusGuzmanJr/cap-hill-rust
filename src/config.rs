@@ -1,4 +1,3 @@
-//! The configuration module for Marzichat.
 #![cfg(feature = "ssr")]
 
 use {
@@ -41,6 +40,9 @@ pub struct Config {
     /// If a client does not transmit the entire set headers within this time,
     /// the request is terminated with a 408 (Request Timeout) error.
     pub shutdown_timeout_seconds: NonZeroU64,
+
+    /// The healthchecks.io success ping url.
+    pub health_check_ping_url: Option<String>,
 }
 
 /// Logging filters and sentry reporting config.

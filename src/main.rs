@@ -19,6 +19,7 @@ use {
 
 mod catalog;
 mod config;
+mod health_check;
 mod logger;
 
 #[actix_web::main]
@@ -116,6 +117,12 @@ async fn main() -> Result<()> {
         server = server
             .bind(debug_listening_address)
             .with_context(|| format!("couldn't bind to {debug_listening_address}"))?;
+    }
+
+    if let Some(url) = config.health_check_ping_url {
+        health_check::spawn_success_loop(url);
+    } else {
+        tracing::warn!("health check ping url is not configured");
     }
 
     server
