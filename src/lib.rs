@@ -1,9 +1,7 @@
-use {const_format::formatcp, leptos::*, leptos_meta::*, leptos_router::*};
+use {leptos::*, leptos_meta::*, leptos_router::*};
 
 mod components;
 mod pages;
-
-type Date = chrono::NaiveDate;
 
 const ORG_NAME: &str = "Cap Hill Rust";
 
@@ -14,10 +12,6 @@ pub mod path {
     pub const LIBRARY: &str = "/library";
 }
 
-/// The site-root relative folder where all compiled output is written to by
-/// leptos.
-pub const COMPILED_ASSETS: &str = "pkg";
-
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -25,7 +19,7 @@ pub fn App() -> impl IntoView {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <Stylesheet href="https://cdn.simplecss.org/simple.min.css"/>
-        <Link rel="manifest" href=formatcp!("{COMPILED_ASSETS}/manifest.json")/>
+        <Link rel="manifest" href="/manifest.json"/>
         <Meta property="og:title" content=ORG_NAME/>
         <Router>
             <Routes>
@@ -39,12 +33,16 @@ pub fn App() -> impl IntoView {
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen::prelude::wasm_bindgen]
 pub fn hydrate() {
+    #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
-    let level = if cfg!(debug_assertions) {
-        log::Level::Debug
-    } else {
-        log::Level::Info
-    };
-    wasm_bindgen::UnwrapThrowExt::unwrap_throw(console_log::init_with_level(level));
+
+    wasm_bindgen::UnwrapThrowExt::unwrap_throw(console_log::init_with_level(
+        if cfg!(debug_assertions) {
+            log::Level::Debug
+        } else {
+            log::Level::Info
+        },
+    ));
+
     mount_to_body(App);
 }

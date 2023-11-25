@@ -8,7 +8,7 @@ use {
         fs::File,
         io::BufReader,
         net::SocketAddr,
-        num::{NonZeroU32, NonZeroU64, NonZeroUsize},
+        num::NonZeroU64,
         path::{Path, PathBuf},
     },
     tracing_subscriber::EnvFilter,

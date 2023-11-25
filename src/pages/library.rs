@@ -1,8 +1,4 @@
-use {
-    crate::{components::*, path},
-    leptos::*,
-    leptos_meta::*,
-};
+use {crate::components::*, leptos::*, leptos_meta::*};
 
 // TODO: add library code here
 
@@ -37,7 +33,7 @@ pub fn Library() -> impl IntoView {
                     <tr>
                         <td>
                         <figure>
-                            <img alt="The Rust Programming Book" src="/assets/images/foo.jpg" />
+                            <img alt="The Rust Programming Book" src="/images/foo.jpg" />
                             <figcaption>The Rust Programming Book</figcaption>
                         </figure>
                         </td>

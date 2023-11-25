@@ -1,6 +1,6 @@
 (
     logging: (
-        directives: "web-server=trace,actix_web=info,hyper=info,reqwest=info,debug",
+        directives: "cap-hill-rust=trace,actix_web=info,actix-http=info,hyper=info,reqwest=info,debug",
         sentry: None,
     ),
     tls: None,

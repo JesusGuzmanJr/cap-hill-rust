@@ -11,7 +11,6 @@ use {
     leptos::*,
     leptos_actix::LeptosRoutes,
     std::{
-        env,
         net::{Ipv4Addr, Ipv6Addr, SocketAddr},
         path::Path,
     },

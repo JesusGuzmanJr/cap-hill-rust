@@ -4,9 +4,26 @@ license = "AGPL-3.0-only"
 name = "cap-hill-rust"
 publish = false
 repository = "https://github.com/JesusGuzmanJr/cap-hill-rust"
-version = "0.2.0-rc.1"
+version = "0.1.1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lints.rust]
+let_underscore_lock = "forbid"
+unsafe_code = "forbid"
+unused_extern_crates = "deny"
+
+future_incompatible = "warn"
+let_underscore_drop = "warn"
+rust_2018_idioms = "warn"
+single_use_lifetimes = "warn"
+unused_import_braces = "warn"
+unused_lifetimes = "warn"
+unused_macro_rules = "warn"
+unused_qualifications = "warn"
+unused_tuple_struct_fields = "warn"
+
+non_snake_case = "allow"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -20,7 +37,7 @@ strip = "debuginfo"
 actix-files = {version = "0.6", optional = true}
 actix-governor = {version = "0.5.0", optional = true}
 actix-web = {version = "4.4", optional = true, features = ["macros", "rustls-0_21"]}
-actix-web-lab = {version = "0.19", optional = true}
+actix-web-lab = {version = "0.20", optional = true}
 anyhow = "1.0"
 chrono = {version = "0.4", features = ["serde"]}
 console_error_panic_hook = {version = "0.1", optional = true}

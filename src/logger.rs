@@ -3,9 +3,7 @@
 
 use {
     crate::config::LoggingConfig,
-    anyhow::Context,
-    std::time::Duration,
-    tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter},
+    tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt},
 };
 
 /// Initializes the logger and sentry.

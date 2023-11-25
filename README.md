@@ -2,8 +2,14 @@
 
 This is the source code repo for the Cap Hill Rust [homepage](https://caphillrust.com).
 
-### Postgres setup
-The app uses postgres as the database. To set it up for local development, follow these steps:
+## Task Runner
+
+This project uses [just](https://github.com/casey/just) as its task runner. To see a list of available tasks, run `just`.
+
+### Postgres Setup
+The app uses postgres to store who's checked out what book from the library.
+
+To set it up for local development, follow these steps:
 
 1. Create a database within postgres. Type `sudo -u postgres psql` (or just `psql` on Mac) in your terminal to enter the postgres interpreter as the postgres user. This user has admin permissions to create more users.
 2. Run `\du` to describe users.
